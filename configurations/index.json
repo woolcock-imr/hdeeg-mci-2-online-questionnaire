@@ -3,6 +3,6 @@
 	"api_path_production":"https://rt.woolcock.org.au/",
 	"default_production":"Yes",
 	"panels":{
-		"panel_main":{"url":"/modules/panel/quest.html","modules":["main.json","https://woolcock-imr.github.io/hdeeg-mci-2/configurations/main.json","https://woolcock-imr.github.io/hdeeg-mci-2/configurations/task.json"]}
+		"panel_main":{"url":"/modules/panel/quest.html","modules":["main.json","https://hdeeg-mci.rt.org.au/configurations/main.json","https://hdeeg-mci.rt.org.au/configurations/task.json"]}
 	}
 }
