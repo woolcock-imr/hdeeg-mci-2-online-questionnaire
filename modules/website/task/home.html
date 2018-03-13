@@ -36,12 +36,12 @@
             var participant_uid=a[0];
             var setup_pid=a[1];
 			//------------------------------------
-			$vm.g_participant_pid='20011117';
+			$vm.g_participant_pid="20011119";
 			$vm.g_participant_uid=participant_uid;
 			$vm.g_participant=participant_uid;
 			$vm.g_setup_pid=setup_pid;
 			//------------------------------------
-			$VmAPI.request({data:{cmd:'participant_signin_v2',username:username,password:password/*,json:"1"*/},callback:function(res){
+			$VmAPI.request({data:{cmd:'participant_signin_v2',username:username,password:password,_json:"1"},callback:function(res){
                 if(res.ret=="1"){
                     $vm.online_questionnaire=1;
                     $vm.user=username;
@@ -50,7 +50,7 @@
                     $VmAPI.set_token(res.token,'');
                     if(res.S1!=undefined) $vm.g_participant=res.S1;
 					$vm.g_task_list=res.List;
-					$vm.nav_load_module("panel_main");
+					$vm.nav_load_module("hdeeg-mci-quest-panel");
                 }
                 else{
                     $('#ErrMsg__ID').text("Invalid participant login ID or password.")

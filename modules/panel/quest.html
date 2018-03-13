@@ -10,14 +10,39 @@
 <script>
 	function F__ID(){
 		//--------------------------------------------------------
+		var prefix=$vm.module_list[$vm.vm['__ID'].name].prefix; if(prefix==undefined) prefix="";
+		var q_list;
+		//--------------------------------------------------------
 		$('#D__ID').on('load',function(){
 		})
 		//--------------------------------------------------------
 		$('#D__ID').on('show',function(){
+			q_list=$vm.module_list[prefix+"quest_list"].list;
 			setup_panel();
 		})
 		//--------------------------------------------------------
 		var status=[]
+		//---------------------------------
+		var get_task_name=function(pid){
+			for(visit in q_list){
+				var sublist=q_list[visit];
+                for(i in sublist){
+					if(pid==sublist[i].table_id /*&& sublist[i].task_name.indexOf(prefix)!=-1*/){
+						return sublist[i].task_name;
+					}
+				}
+			}
+			return "not found";
+		}
+		//---------------------------------
+		var get_module_id=function(pid){
+			for(module in $vm.module_list){
+				if(pid==$vm.module_list[module].table_id && module.indexOf(prefix)!=-1){
+					return module;
+				}
+			}
+			return "not found";
+		}
 		//---------------------------------
 		var setup_panel=function(){
 			//----------------------------------
@@ -29,18 +54,9 @@
 		        if(status[pid.toString()]==undefined){
 		            status[pid.toString()]={rid:0}
 		        }
-		        for(module in $vm.module_list){
-		            var nnn=$vm.module_list[module];
-		            if(nnn.table_id!==undefined){
-		                var module_pid=nnn.table_id;
-		                if(pid==module_pid){
-							if(nnn.task!==undefined){
-		                    	txt+="<li id="+pid+" module="+module+">"+nnn.task+"</li>";
-		                	}
-							else console.log("The module "+module+" does not have a task name for list on the panel!")
-						}
-		            }
-		        }
+				var task_name=get_task_name(pid.toString());
+				var module=get_module_id(pid.toString());
+				txt+="<li id="+pid+" module="+module+">"+task_name+"</li>";
 		    }
 		    $('#items__ID').html(txt);
 		    //----------------------------------
@@ -75,9 +91,11 @@
 		            $li.html("<u style='cursor:pointer' module="+module+">"+task_name+"</u>");
 		            $li.find('u').on('click',function(){
 		                var module=$(this).attr('module');
+                        //the module allready contains the prefix
 						if($vm.module_list[module].form_module!=undefined){
 							//grid-form
-							$vm.load_module_by_name(module,undefined,{"participant_uid":$vm.g_participant_uid,"participant_name":$vm.g_participant});
+							//$vm.load_module_by_name(module,undefined,{"participant_uid":$vm.g_participant_uid,"participant_name":$vm.g_participant});
+							$vm.nav_load_module(module,"hidden",{"participant_uid":$vm.g_participant_uid,"participant_name":$vm.g_participant});
 						}
 						else{
 							//independent form
@@ -96,7 +114,6 @@
 	#D__ID{
 		overflow: auto;
 		animation: vm_module_fadein 1.0s;
-		background-color: #fff;
 	}
 	#panel__ID{
 		padding:30px;
